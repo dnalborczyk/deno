@@ -2594,7 +2594,7 @@ declare namespace __fetch {
   }
   /** Fetch a resource from the network. */
   export function fetch(
-    input: __domTypes.Request | __url.URL | string,
+    input: __domTypes.Request | string,
     init?: __domTypes.RequestInit
   ): Promise<Response>;
 }
@@ -2771,7 +2771,11 @@ declare namespace __urlSearchParams {
 
 declare namespace __url {
   // @url js/url.d.ts
-  export interface URL {
+
+  export class URL {
+    private _parts;
+    private _searchParams;
+    private _updateSearchParams;
     hash: string;
     host: string;
     hostname: string;
@@ -2782,18 +2786,14 @@ declare namespace __url {
     port: string;
     protocol: string;
     search: string;
-    readonly searchParams: __urlSearchParams.URLSearchParams;
     username: string;
+    readonly searchParams: __urlSearchParams.URLSearchParams;
+    constructor(url: string, base?: string | URL);
     toString(): string;
     toJSON(): string;
+    static createObjectURL(b: __domTypes.Blob): string;
+    static revokeObjectURL(url: string): void;
   }
-
-  export const URL: {
-    prototype: URL;
-    new (url: string, base?: string | URL): URL;
-    createObjectURL(object: __domTypes.Blob): string;
-    revokeObjectURL(url: string): void;
-  };
 }
 
 declare namespace __workers {
